@@ -1,29 +1,43 @@
 <script setup>
 import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
+
 const season = ref('Season Sale');
 const main = ref("Men's Fashion");
 </script>
 
 <template>
   <div
-    class="min-w-midW md:h-land bg-customZinc md:overflow-x-hidden no-scrollbar pt-16 mt-16"
+    class="min-w-midW md:h-land md:bg-customZinc md:overflow-x-hidden no-scrollbar pt-16 mt-16"
   >
     <div
       class="md:flex items-center md:justify-between max-w-7xl h-full m-auto"
     >
       <div class="md:w-1/2 text-center md:mx-6 mx-auto">
-        <p class="font-playwrite-NL text-5xl text-custom-blue mb-6">
+        <p
+          class="font-playwrite-NL md:text-5xl text-3xl text-custom-blue md:mb-6"
+        >
           {{ season }}
         </p>
-        <h1 class="text-7xl font-bold my-4">{{ main }}</h1>
-        <p class="text-3xl font-thin font-mono">Min. 35-70% Off</p>
+        <h1 class="md:text-7xl text-4xl font-bold my-4">{{ main }}</h1>
+        <p class="md:text-3xl text-xl font-thin font-mono">Min. 35-70% Off</p>
 
-        <div class="flex items-center justify-center mt-14 transition-all">
-          <button class="btn-blue ease-in-out">SHOP NOW</button>
-          <button class="btn-light ease-in-out">READ MORE</button>
+        <div
+          class="flex items-center justify-center md:mt-14 mt-4 transition-all text-white"
+        >
+          <RouterLink
+            to="/Shop"
+            class="md:px-6 md:py-4 ease-in-out text-sm p-2 mx-1 bg-custom-blue rounded-md hover:bg-opacity-75"
+            >SHOP NOW</RouterLink
+          >
+          <RouterLink
+            to="/Blog"
+            class="md:px-6 md:py-4 ease-in-out text-sm p-2 mx-1 bg-custom-blue rounded-md hover:bg-opacity-75"
+            >READ MORE</RouterLink
+          >
         </div>
       </div>
-      <div class="w-1/2 h-full md:flex">
+      <div class="w-1/2 h-full md:flex mb-4">
         <img
           src="@\assets\Autumn___Winter_2016_Lookbook-removebg-preview.png"
           alt="A male Model"

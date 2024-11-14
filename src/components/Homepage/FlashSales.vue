@@ -21,11 +21,11 @@ const flashs = ref([
 
 <template>
   <div
-    class="flex flex-col md:grid grid-cols-2 gap-3 md:max-w-7xl h-flash my-6 mx-auto text-left"
+    class="flex flex-col md:grid grid-cols-2 gap-3 md:max-w-7xl max-h-flash my-6 mx-auto text-left"
     @click.prevent="SubmitEvent"
   >
     <div
-      class="h-full rounded-md p-6 mx-3 bg-center bg-cover transition-transform duration-500 ease-in-out transform md:hover:scale-105"
+      class="h-full rounded-md p-6 md:mx-3 mx-5 bg-center bg-cover transition-transform duration-500 ease-in-out transform md:hover:scale-105"
       v-for="(flash, index) in flashs"
       :key="index"
       :style="{ backgroundImage: `url(${flash['bgImage']})` }"

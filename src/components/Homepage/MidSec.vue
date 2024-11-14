@@ -15,7 +15,7 @@ const headers = ref([
 </script>
 
 <template>
-  <div class="w-2xl h-mid mx-20 my-auto" @click.prevent="SubmitEvent">
+  <div class="w-2xl max-h-mid mx-auto my-auto" @click.prevent="SubmitEvent">
     <div
       class="hidden md:flex justify-between max-h-16 md:my-6 mx-auto max-w-7xl"
     >
@@ -33,7 +33,7 @@ const headers = ref([
         </div>
       </div>
     </div>
-    <div class="grid h-full md:flex md:h-side md:max-w-7xl md:mx-auto p-2">
+    <div class="grid h-full md:flex md:h-side md:max-w-7xl w-full mx-auto p-2">
       <div
         class="rounded-md md:mr-4 bg-[url('@/assets/woman.jpeg')] bg-cover mx-6 my-4 md:w-1/2 transition-transform duration-500 ease-in-out transform hover:scale-105"
       >
@@ -43,12 +43,12 @@ const headers = ref([
           <p class="text-custom-blue font-semibold text-2xl my-4">
             New Arrivals!!
           </p>
-          <h2 class="text-4xl font-semibold mb-3">Women's Style</h2>
+          <h2 class="md:text-4xl text-2xl font-semibold mb-3">Women's Style</h2>
           <p class="text-2xl">Up to 70% Off</p>
           <button
-            class="rounded-full border-2 border-white text-white font-medium py-2 px-5 my-4 hover:opacity-70 transition-all ease-in-out duration-500"
+            class="rounded-full border-2 border-white text-white font-medium p-2 md:text-base text-sm md:py-2 md:px-5 my-4 hover:opacity-70 transition-all ease-in-out duration-500"
           >
-            Shop Now
+            <RouterLink to="/Shop">Shop Now</RouterLink>
           </button>
         </div>
       </div>
@@ -57,10 +57,10 @@ const headers = ref([
           <div
             class="w-1/2 mr-4 p-4 relative top-0 left-0 leading-2 rounded-xl bg-[url('@/assets/bag1.jpg')] bg-cover transition-transform duration-500 ease-in-out transform hover:scale-105"
           >
-            <div class="promo">25% OFF</div>
-            <h2 class="text-3xl text-white font-bold mt-2 mb-6">Handbag</h2>
-            <a href="#" class="text-white flex items-center hover:underline"
-              >Shop Now
+            <div class="promo text-sm">25% OFF</div>
+            <h2 class="md:text-3xl text-white font-bold mt-2 mb-6">Handbag</h2>
+            <button class="text-white flex items-center hover:underline">
+              <RouterLink to="/Shop">Shop Now</RouterLink>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -72,16 +72,21 @@ const headers = ref([
                 <path
                   fill-rule="evenodd"
                   d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"
-                /></svg
-            ></a>
+                />
+              </svg>
+            </button>
           </div>
           <div
             class="w-1/2 p-4 relative top-0 left-0 leading-2 rounded-xl bg-[url('@/assets/watch.jpg')] bg-cover transition-transform duration-500 ease-in-out transform hover:scale-105"
           >
-            <div class="promo mb-3">45% OFF</div>
-            <h2 class="text-3xl text-zinc-500 font-bold mt-2 mb-7">Watch</h2>
-            <a href="#" class="text-zinc-400 flex items-center hover:underline"
-              >Shop Now
+            <div class="promo mb-3 text-sm">45% OFF</div>
+            <h2
+              class="md:text-3xl md:text-zinc-500 text-zinc-100 font-bold mt-2 mb-7"
+            >
+              Watch
+            </h2>
+            <button class="text-zinc-400 flex items-center hover:underline">
+              <RouterLink to="/Shop">Shop Now</RouterLink>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -93,18 +98,20 @@ const headers = ref([
                 <path
                   fill-rule="evenodd"
                   d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"
-                /></svg
-            ></a>
+                />
+              </svg>
+            </button>
           </div>
         </div>
         <div
           class="p-4 md:pl-8 md:pt-4 text-left text-zinc-600 rounded-xl h-1/2 mt-4 bg-[url('@/assets/backpack.jpg')] bg-center bg-cover bg-no-repeat transition-transform duration-500 ease-in-out transform hover:scale-105"
         >
           <p class="font-medium text-lg mb-3">Accessories</p>
-          <h2 class="text-4xl font-extrabold mb-4">Backpack</h2>
-          <p class="font-medium text-lg mb-3">Min. 40-80% Off</p>
-          <p class="flex items-center w-24 border-b-2 border-zinc-600">
-            <a href="#">Shop Now</a
+          <h2 class="md:text-4xl text-2xl font-extrabold mb-4">Backpack</h2>
+          <p class="font-medium md:text-lg mb-3">Min. 40-80% Off</p>
+          <p class="flex items-center w-28 hover:underline">
+            <button class="mb-3 md:mb-0">
+              <RouterLink to="/Shop">Shop Now</RouterLink></button
             ><svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
