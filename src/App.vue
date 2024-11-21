@@ -4,8 +4,8 @@
   <router-view></router-view>
 </template>
 
-<style>
+<!-- <style>
 body {
   background-color: #f5f4f4;
 }
-</style>
+</style> -->

@@ -25,12 +25,14 @@ export default {
         land: '80vh',
         flash: '25vh',
         contact: '95vh',
-        line: '1px',
+        h: '1px',
       },
       width: {
         midW: '95vw',
         blog: '85vw',
         inner: '80vw',
+        login: '60vw',
+        signup: '30vw',
       },
       backgroundImage: {
         'custom-bg': "url('@/assets/bag1.jpg')",
