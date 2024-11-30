@@ -1,6 +1,59 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
+import { reactive } from 'vue';
+import { useVuelidate } from '@vuelidate/core';
+import { required, email, helpers } from '@vuelidate/validators';
 import Nav from '../components/Homepage/Nav.vue';
+
+const state = reactive({
+  firstName: '', //matches state.firstName
+  lastName: '', //matches state.lastName
+  //matches state.password
+  credentials: {
+    password: '',
+    confirmPassword: '',
+  },
+  contact: {
+    email: '', //matches state.email
+  },
+
+  remember: false,
+});
+
+// const matchPassword = helpers.withMessage(
+//   'Passwords must match',
+//   (value, state) => value === state.credentials.password,
+// );
+
+const rules = {
+  firstName: { required }, // Matches state.firstName
+  lastName: { required }, // Matches state.lastName
+  credentials: {
+    password: { required },
+    confirmPassword: { required },
+  },
+  contact: {
+    email: { required, email }, // Matches state.contact.email
+  },
+
+  remember: {
+    required: helpers.withMessage(
+      'You must accept to be remembered.',
+      value => value === true,
+    ),
+  },
+};
+
+const v$ = useVuelidate(rules, state);
+
+const submit = () => {
+  v$.value.$touch();
+  if (v$.value.$invalid) {
+    console.log('Form is invalid');
+    return;
+  }
+  console.log('Form submitted successfully', state);
+};
 </script>
 
 <template>
@@ -16,7 +69,10 @@ import Nav from '../components/Homepage/Nav.vue';
           <div
             class="flex flex-col justify-between gap-8 px-6 max-w-full leading-none md:mx-4 h-full"
           >
-            <form class="md:mx-16 flex flex-col gap-6 my-auto md:my-0">
+            <form
+              @submit.prevent="submit"
+              class="md:mx-16 flex flex-col gap-4 my-auto md:my-0"
+            >
               <div class="w-full text-center mb-10 md:mt-10">
                 <h1
                   class="md:text-4xl text-3xl font-medium mb-2 md:mt-18 text-custom-blue-2"
@@ -31,9 +87,16 @@ import Nav from '../components/Homepage/Nav.vue';
                   type="email"
                   name="email"
                   id="email"
-                  class="outline-none border-b p-2 border-black mb-4"
+                  v-model="state.contact.email"
+                  class="outline-none border-b p-2 border-black mb-1"
                 />
-                <div class="md:grid md:grid-cols-2 gap-3 mt-4 mb-8">
+                <span
+                  class="text-red-500"
+                  v-for="error of v$.contact.email.$errors"
+                  :key="error.$uid"
+                  >{{ error.$message }}</span
+                >
+                <div class="md:grid md:grid-cols-2 gap-3 my-4">
                   <div class="flex flex-col w-full mb-6">
                     <label for="firstName" class="font-medium"
                       >First Name</label
@@ -42,8 +105,15 @@ import Nav from '../components/Homepage/Nav.vue';
                       type="text"
                       name="firstName"
                       id="firstName"
-                      class="outline-none border-b p-2 border-black rounded-0"
+                      v-model="state.firstName"
+                      class="outline-none border-b border-black bg-transparent mb-1"
                     />
+                    <span
+                      class="text-red-500"
+                      v-for="error of v$.firstName.$errors"
+                      :key="error.$uid"
+                      >{{ error.$message }}</span
+                    >
                   </div>
                   <div class="flex flex-col w-full">
                     <label for="lastName" class="font-medium">Last Name</label>
@@ -51,8 +121,15 @@ import Nav from '../components/Homepage/Nav.vue';
                       type="text"
                       name="lastName"
                       id="lastName"
-                      class="outline-none border-b p-2 border-black rounded-0"
+                      v-model="state.lastName"
+                      class="outline-none border-b border-black bg-transparent mb-1"
                     />
+                    <span
+                      class="text-red-500"
+                      v-for="error of v$.lastName.$errors"
+                      :key="error.$uid"
+                      >{{ error.$message }}</span
+                    >
                   </div>
                 </div>
                 <div class="mb-4 flex flex-col">
@@ -61,8 +138,15 @@ import Nav from '../components/Homepage/Nav.vue';
                     type="password"
                     name="password"
                     id="password"
-                    class="outline-none border-b p-2 border-black rounded-0"
+                    v-model="state.credentials.password"
+                    class="outline-none border-b border-black bg-transparent mb-1"
                   />
+                  <span
+                    class="text-red-500"
+                    v-for="error of v$.credentials.password.$errors"
+                    :key="error.$uid"
+                    >{{ error.$message }}</span
+                  >
                 </div>
                 <div class="my-4 flex flex-col">
                   <label for="confirmPassword" class="font-medium"
@@ -72,19 +156,39 @@ import Nav from '../components/Homepage/Nav.vue';
                     type="password"
                     name="confirmPassword"
                     id="confirmPassword"
-                    class="outline-none border-b p-2 border-black rounded-0"
+                    v-model="state.credentials.confirmPassword"
+                    class="outline-none border-b border-black bg-transparent mb-1"
                   />
+                  <span
+                    v-if="v$.credentials.confirmPassword.$error"
+                    class="text-red-500"
+                  >
+                    {{ v$.credentials.confirmPassword.$errors[0].$message }}
+                  </span>
                 </div>
               </div>
-              <div class="flex justify-between items-center md:mb-8">
-                <div class="flex items-center gap-1 w-full">
-                  <input type="checkbox" name="remember" id="remember" />
+              <div class="flex flex-col gap-1 md:mb-8 w-full">
+                <div class="flex items-center gap-1">
+                  <input
+                    type="checkbox"
+                    name="remember"
+                    id="remember"
+                    v-model="state.remember"
+                  />
                   <p class="font-medium">Remember me for 30 days</p>
                 </div>
+                <span
+                  class="text-red-500"
+                  v-for="error of v$.remember.$errors"
+                  :key="error.$uid"
+                  >{{ error.$message }}</span
+                >
               </div>
+
               <div class="flex flex-col gap-5 items-center text-center w-full">
                 <button
                   class="w-full bg-custom-blue-2 text-white font-medium rounded-3xl p-4 hover:bg-opacity-85"
+                  @click="submit"
                 >
                   Create account
                 </button>
@@ -121,7 +225,7 @@ import Nav from '../components/Homepage/Nav.vue';
                 </button>
               </div>
             </form>
-            <div class="mx-auto mb-8">
+            <div class="mx-auto">
               <p>
                 Already have an account?
                 <RouterLink
@@ -137,3 +241,9 @@ import Nav from '../components/Homepage/Nav.vue';
     </div>
   </div>
 </template>
+
+<style scoped>
+input {
+  padding: 8px;
+}
+</style>

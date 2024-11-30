@@ -1,6 +1,41 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import Nav from '../components/Homepage/Nav.vue';
+import { reactive } from 'vue';
+import { useVuelidate } from '@vuelidate/core';
+import { required, email, helpers } from '@vuelidate/validators';
+
+const state = reactive({
+  contact: {
+    email: '', //matches state.email
+  },
+  password: '',
+  agree: false,
+});
+
+const rules = {
+  contact: {
+    email: { required, email }, // Matches state.contact.email
+  },
+  password: { required },
+  agree: {
+    required: helpers.withMessage(
+      'You must agree to be remembered.',
+      value => value === true,
+    ),
+  },
+};
+
+const v$ = useVuelidate(rules, state);
+
+const submit = () => {
+  v$.value.$touch();
+  if (v$.value.$invalid) {
+    console.log('Form is invalid');
+    return;
+  }
+  console.log('Form submitted successfully', state);
+};
 </script>
 
 <template>
@@ -15,105 +50,92 @@ import Nav from '../components/Homepage/Nav.vue';
           alt="Login"
           class="w-1/2 border hidden md:block h-side my-auto"
         />
-
-        <div
-          class="rounded-xl md:border md:shadow-lg w-full md:max-w-1/2 md:bg-white py-6"
+        <form
+          @submit.prevent="submit"
+          class="h-full rounded-xl md:w-1/2 w-full p-6 flex flex-col items-center justify-between md:bg-gray-50 md:shadow-md"
         >
           <div
-            class="flex flex-col justify-between gap-10 px-6 max-w-full leading-none md:mx-4 h-full"
+            class="md:min-h-96 mx-6 md:my-36 my-12 md:w-3/4 w-full flex flex-col justify-between gap-14 items-center"
           >
-            <div class="md:mx-16 flex flex-col gap-6 my-auto md:my-0">
-              <div class="w-full text-center my-10">
-                <h1
-                  class="md:text-5xl text-3xl font-medium mb-2 md:mt-24 text-custom-blue-2"
-                >
-                  Welcome back!
-                </h1>
-                <p>Please fill in your details</p>
-              </div>
-              <div class="flex flex-col">
-                <label for="email" class="font-medium md:text-lg">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  class="outline-none border-b p-2 border-black mb-4 rounded-0"
-                />
-                <label for="password" class="font-medium md:text-lg"
-                  >Password</label
-                >
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  class="outline-none border-b p-2 border-black mb-4 rounded-0"
-                />
-              </div>
-              <div class="flex mb-8">
-                <div class="flex items-center gap-1 w-full">
-                  <input type="checkbox" name="remember" id="remember" />
-                  <p class="md:text-sm text-xs font-medium">
-                    Remember me for 30 days
-                  </p>
-                </div>
-                <RouterLink
-                  to="/Reset"
-                  class="font-thin text-xs w-1/2 text-end underline"
-                  >Forgot password?</RouterLink
-                >
-              </div>
-              <div class="flex flex-col gap-5 items-center text-center w-full">
-                <button
-                  class="w-full bg-custom-blue-2 text-white font-medium rounded-3xl p-4 hover:bg-opacity-85"
-                >
-                  Log In
-                </button>
-                <button
-                  class="w-full bg-gray-100 font-medium rounded-3xl p-4 hover:bg-gray-200 flex justify-center items-center gap-2"
-                >
-                  <p class="w-6 h-6 mr-3 flex items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 48 48"
-                      width="20px"
-                      height="20px"
-                    >
-                      <path
-                        fill="#EA4335"
-                        d="M24 9.5c3.58 0 6.61 1.24 9.09 3.26l6.82-6.82C35.51 2.37 30.12 0 24 0 14.97 0 7.18 5.63 3.54 13.75l7.64 5.93C12.75 12.33 17.95 9.5 24 9.5z"
-                      />
-                      <path
-                        fill="#34A853"
-                        d="M46.5 24c0-1.61-.14-3.18-.41-4.69H24v9.39h12.73c-.55 3.13-2.19 5.79-4.71 7.61l7.42 5.76C44.38 37.38 46.5 31.08 46.5 24z"
-                      />
-                      <path
-                        fill="#FBBC04"
-                        d="M10.54 28.63c-.5-1.48-.79-3.05-.79-4.63s.28-3.15.79-4.63L2.91 13.46C1.06 17.08 0 20.94 0 24.5s1.06 7.42 2.91 11.04l7.63-5.91z"
-                      />
-                      <path
-                        fill="#4285F4"
-                        d="M24 48c6.12 0 11.29-2.03 15.05-5.5l-7.42-5.76C29.85 38.9 27.06 39.5 24 39.5c-6.05 0-11.25-3.88-13.18-9.42l-7.63 5.91C7.18 42.38 14.97 48 24 48z"
-                      />
-                      <path fill="none" d="M0 0h48v48H0z" />
-                    </svg>
-                  </p>
-                  Login with Google
-                </button>
-              </div>
+            <div class="text-center">
+              <h1 class="md:text-5xl text-4xl font-medium">Welcome back!</h1>
+              <p>please enter your details</p>
             </div>
-            <div class="mx-auto mb-8">
-              <p>
-                Don't have an account?
-                <RouterLink
-                  :to="{ path: '/Signup' }"
-                  class="font-medium text-custom-blue underline"
-                  >Sign Up</RouterLink
-                >
-              </p>
+            <div class="flex flex-col gap-3 w-full">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                v-model="state.contact.email"
+                class="w-full px-2 outline-none bg-transparent border-b border-black mb-2"
+              />
+              <span
+                class="text-red-500"
+                v-for="error of v$.contact.email.$errors"
+                :key="error.$uid"
+                >{{ error.$message }}</span
+              >
+              <label for="password">Password</label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                v-model="state.password"
+                class="w-full px-2 outline-none bg-transparent border-b border-black"
+              />
+              <span
+                class="text-red-500"
+                v-for="error of v$.password.$errors"
+                :key="error.$uid"
+                >{{ error.$message }}</span
+              >
+            </div>
+            <div class="flex flex-col items-center w-full">
+              <div class="flex justify-between items-center w-full">
+                <p class="text-sm flex gap-2 items-center">
+                  <input
+                    type="checkbox"
+                    name="agree"
+                    id="agree"
+                    v-model="state.agree"
+                  />Remember for 30 days
+                </p>
+
+                <a href="#" class="underline text-xs">forgot password?</a>
+              </div>
+              <span
+                class="text-red-500"
+                v-for="error of v$.agree.$errors"
+                :key="error.$uid"
+                >{{ error.$message }}</span
+              >
+            </div>
+
+            <div class="flex flex-col gap-3 w-full">
+              <button
+                @click="submit"
+                class="w-full rounded-full bg-custom-blue text-white p-3"
+              >
+                Log In
+              </button>
+              <button class="w-full rounded-full bg-gray-300 text-black p-3">
+                Log In with Google
+              </button>
             </div>
           </div>
-        </div>
+          <p class="">
+            Don't have an account?
+            <RouterLink
+              :to="{ path: '/Signup' }"
+              class="text-custom-blue underline"
+              >Sign up</RouterLink
+            >
+          </p>
+        </form>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped></style>
