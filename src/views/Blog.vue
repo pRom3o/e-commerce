@@ -10,17 +10,11 @@ import Nav from '@/components/Homepage/Nav.vue';
   >
     <div class="my-8 p-2 flex flex-col mx-4">
       <div
-        class="flex items-center justify-center mx-auto h-blog overflow-auto w-full md:w-inner my-6 border border-gray-200 shadow-lg"
+        class="flex md:flex-row flex-col items-center justify-center mx-auto h-[60vh] md:h-blog overflow-auto w-full md:w-inner my-6 shadow-lg"
       >
         <div
-          class="hidden md:flex bg-custom-bg bg-center bg-cover w-1/2 h-full rounded-lg mr-4"
-        >
-          <!-- <img
-            src="@/assets/Autumn___Winter_2016_Lookbook-removebg-preview.png"
-            alt=""
-            class="w-1/2"
-          /> -->
-        </div>
+          class="bg-custom-bg bg-center bg-cover md:w-1/2 w-full md:h-full h-1/2 rounded-lg md:mr-4"
+        ></div>
         <p class="md:w-1/2 p-4">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga itaque
           ullam officia a aliquam cupiditate doloremque atque nesciunt saepe.
@@ -35,17 +29,11 @@ import Nav from '@/components/Homepage/Nav.vue';
         </p>
       </div>
       <div
-        class="flex items-center justify-center mx-auto h-blog overflow-auto w-full md:w-inner my-6 shadow-lg"
+        class="flex md:flex-row flex-col items-center justify-center mx-auto h-[60vh] md:h-blog overflow-auto w-full md:w-inner my-6 shadow-lg"
       >
         <div
-          class="hidden md:flex bg-custom-bg bg-center bg-cover w-1/2 h-full rounded-lg mr-4"
-        >
-          <!-- <img
-            src="@/assets/Autumn___Winter_2016_Lookbook-removebg-preview.png"
-            alt=""
-            class="w-1/2"
-          /> -->
-        </div>
+          class="bg-custom-bg bg-center bg-cover md:w-1/2 w-full md:h-full h-1/2 rounded-lg md:mr-4"
+        ></div>
         <p class="md:w-1/2 p-3">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga itaque
           ullam officia a aliquam cupiditate doloremque atque nesciunt saepe.
@@ -60,17 +48,11 @@ import Nav from '@/components/Homepage/Nav.vue';
         </p>
       </div>
       <div
-        class="flex items-center justify-center mx-auto h-blog overflow-auto w-full md:w-inner my-6 shadow-lg"
+        class="flex md:flex-row flex-col items-center justify-center mx-auto h-[60vh] md:h-blog overflow-auto w-full md:w-inner my-6 shadow-lg"
       >
         <div
-          class="hidden md:flex bg-custom-bg bg-center bg-cover w-1/2 h-full rounded-lg mr-4"
-        >
-          <!-- <img
-            src="@/assets/Autumn___Winter_2016_Lookbook-removebg-preview.png"
-            alt=""
-            class="w-1/2"
-          /> -->
-        </div>
+          class="bg-custom-bg bg-center bg-cover md:w-1/2 w-full md:h-full h-1/2 rounded-lg md:mr-4"
+        ></div>
         <p class="md:w-1/2 p-3">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga itaque
           ullam officia a aliquam cupiditate doloremque atque nesciunt saepe.

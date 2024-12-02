@@ -75,7 +75,7 @@ const isActive = path => route.path === path;
           </li>
         </ul>
       </div>
-
+      <!-- mobile menu -->
       <div
         class="md:hidden fixed right-0 top-0 flex items-center justify-center"
       >
@@ -119,11 +119,15 @@ const isActive = path => route.path === path;
             </svg>
           </span>
         </button>
+        <!-- mobile menu items -->
         <div class="text-center flex items-center justify-center">
-          <transition name="dropdown">
-            <ul
+          <transition name="dropdown" appear>
+            <TransitionGroup
+              name="fade"
+              tag="ul"
+              appear
               v-if="isMenuOpen"
-              class="flex flex-col justify-center items-center absolute top-14 right-0 w-screen h-screen md:hidden shadow-lg rounded-lg p-6 space-y-5 bg-gray-100 text-custom-blue transition-transform duration-300 ease-in-out"
+              class="flex flex-col justify-center items-center absolute top-14 right-0 w-screen h-screen md:hidden p-6 space-y-5 bg-gray-100 text-custom-blue transition-transform duration-300 ease-in-out"
             >
               <li
                 class="list-none mx-2 transition-all"
@@ -142,7 +146,7 @@ const isActive = path => route.path === path;
                   ><span v-html="icon.id"></span
                 ></RouterLink>
               </li>
-            </ul>
+            </TransitionGroup>
           </transition>
         </div>
       </div>
@@ -151,28 +155,37 @@ const isActive = path => route.path === path;
 </template>
 
 <style scoped>
+.fade-enter-from {
+  opacity: 0;
+  transform: translateY(100px) scale(0.85);
+}
+
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-70px) scale(0.85);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s ease-in-out 0.2s;
+}
+
 .dropdown-enter-active,
 .dropdown-leave-active {
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
+  transition: all 0.5s ease;
 }
-.dropdown-enter-from {
+.dropdown-enter-from,
+.dropdown-leave-to {
   opacity: 0;
-  transform: scale(0.95);
+  transform: translateY(-50px) scale(0.95);
 }
-.dropdown-enter-to {
-  opacity: 1;
-  transform: scale(1);
-}
+
+.dropdown-enter-to,
 .dropdown-leave-from {
   opacity: 1;
   transform: scale(1);
 }
-.dropdown-leave-to {
-  opacity: 0;
-  transform: scale(0.95);
-}
+
 .rotate-0 {
   transform: rotate(0deg);
 }

@@ -38,7 +38,7 @@ const rules = {
 
   remember: {
     required: helpers.withMessage(
-      'You must accept to be remembered.',
+      'Please check the checkbox',
       value => value === true,
     ),
   },

@@ -1,13 +1,57 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
+import { reactive, ref } from 'vue';
+import { useVuelidate } from '@vuelidate/core';
+import { required, email, helpers } from '@vuelidate/validators';
 import Nav from '@/components/Homepage/Nav.vue';
-// import items from '@/components/svg.vue';
-import { ref } from 'vue';
-const header = ref('Get in Touch');
-const largeText = ref("Let's Chat, Reach Out to Us");
-const smallText = ref(
-  "Have questions or feedback? We're here to help. Send us a message and we'll respond within 24 hours.",
-);
+const header = 'Get in Touch';
+const largeText = "Let's Chat, Reach Out to Us";
+const smallText =
+  "Have questions or feedback? We're here to help. Send us a message and we'll respond within 24 hours.";
+const state = reactive({
+  firstName: '', //matches state.firstName
+  lastName: '', //matches state.lastName
+  contact: {
+    email: '', //matches state.email
+  },
+  message: '', //matches state.message
+
+  agree: false, //matches state.agree
+});
+
+const rules = reactive({
+  firstName: {
+    required: helpers.withMessage('Please enter your first name', required),
+  },
+  lastName: {
+    required: helpers.withMessage('Please enter your last name', required),
+  },
+  contact: {
+    email: {
+      required: helpers.withMessage('please enter an email', required),
+      email,
+    },
+  },
+  message: { required: helpers.withMessage('Message box is empty', required) },
+  agree: {
+    required: helpers.withMessage(
+      'please accept our privacy policy',
+      value => value === true,
+    ),
+  },
+});
+
+const v$ = useVuelidate(rules, state);
+
+const submit = () => {
+  v$.value.$touch();
+  if (v$.value.$invalid) {
+    console.log('Form is invalid');
+    return;
+  }
+  console.log('Form submitted successfully', state);
+};
+
 const items = ref([
   {
     name: 'Email',
@@ -30,12 +74,13 @@ const items = ref([
 
 <template>
   <Nav />
-  <div class="py-16 bg-customZinc font-sans">
+  <div class="py-16 md:bg-customZinc font-sans">
     <div
-      class="md:max-w-7xl max-h-contact md:flex items-center jusify-center gap-4 mt-16 md:mx-auto mx-8"
+      class="md:max-w-7xl md:max-h-contact md:flex items-center jusify-center gap-4 mt-16 md:mx-auto mx-8"
     >
       <form
-        class="md:w-full rounded-3xl md:p-8 p-4 border bg-zinc-100 shadow-sm"
+        @submit.prevent="submit"
+        class="rounded-3xl md:p-8 p-4 md:border md:bg-zinc-100 md:shadow-sm"
       >
         <h1 class="text-custom-blue-2 text-xl font-medium mb-4 mt-4">
           {{ header }}
@@ -49,41 +94,56 @@ const items = ref([
         <div class="h-line bg-zinc-200 rounded-full mb-6"></div>
         <div class="w-full flex flex-col">
           <div class="w-full md:flex gap-3 md:gap-6">
-            <div class="md:w-1/2">
-              <label for="first name" class="font-medium block mb-3"
+            <div class="md:w-1/2 mb-3">
+              <label for="firstName" class="font-medium block mb-3"
                 >First Name</label
               >
               <input
                 type="text"
-                name="first name"
-                id="first name"
+                name="FirstName"
+                id="FirstName"
+                v-model="state.firstName"
                 placeholder="First name"
                 class="p-3 rounded-md w-full bg-slate-50 focus:outline-none focus:ring focus:border-blue-500"
               />
+              <span class="text-red-500" v-if="v$.firstName.$errors">{{
+                v$.firstName.$errors[0]?.$message
+              }}</span>
             </div>
             <div class="md:w-1/2">
-              <label for="last name" class="font-medium block mb-3"
+              <label for="lastName" class="font-medium block mb-3"
                 >Last Name</label
               >
               <input
                 type="text"
-                name="last name"
-                id="last name"
+                name="lastName"
+                id="lastName"
+                v-model="state.lastName"
                 placeholder="Last name"
                 class="p-3 rounded-md w-full bg-slate-50 focus:outline-none focus:ring focus:border-blue-500"
               />
+              <span class="text-red-500" v-if="v$.lastName.$errors">{{
+                v$.lastName.$errors[0]?.$message
+              }}</span>
             </div>
           </div>
-          <label for="email address" class="font-medium block mt-6 mb-3"
+          <label for="email" class="font-medium block mt-6 mb-3"
             >Email address</label
           >
           <input
             type="text"
-            name="email address"
-            id="email address"
+            name="email"
+            id="email"
+            v-model="state.contact.email"
             placeholder="Email address"
             class="p-3 rounded-md w-full bg-slate-50 focus:outline-none focus:ring focus:border-blue-500"
           />
+          <span
+            class="text-red-500"
+            v-for="error of v$.contact.email.$errors"
+            :key="error.$uid"
+            >{{ v$.contact.email.$errors[0]?.$message }}</span
+          >
           <label for="message" class="font-medium block mt-6 mb-3"
             >Message</label
           >
@@ -91,18 +151,34 @@ const items = ref([
             type="text"
             name="message"
             id="message"
+            v-model="state.message"
             placeholder="Leave us a message"
             class="p-3 rounded-md w-full resize-none md:h-52 h-28 bg-slate-50 focus:outline-none focus:ring focus:border-blue-500"
           />
+          <span class="text-red-500" v-if="v$.message.$errors">{{
+            v$.message.$errors[0]?.$message
+          }}</span>
           <div class="flex justify-between mt-6 items-center">
-            <div class="flex gap-3">
-              <input type="checkbox" />
-              <p class="text-custom-blue-2 md:text-base text-xs">
-                I agree to our friendly
-                <span class="underline"
-                  ><RouterLink to="/Privacy">privacy policy</RouterLink></span
-                >
-              </p>
+            <div class="flex flex-col gap-2">
+              <div class="flex gap-3">
+                <input
+                  type="checkbox"
+                  name="agree"
+                  id="agree"
+                  v-model="state.agree"
+                />
+                <p class="text-custom-blue-2 md:text-base text-sm">
+                  I agree to our friendly
+                  <span class="underline"
+                    ><RouterLink to="/Privacy">privacy policy</RouterLink></span
+                  >
+                </p>
+              </div>
+              <span
+                class="text-red-500 md:text-base text-sm"
+                v-if="v$.agree.$errors"
+                >{{ v$.agree.$errors[0]?.$message }}</span
+              >
             </div>
             <button
               type="submit"
